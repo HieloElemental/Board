@@ -7,11 +7,30 @@ import Footer from "../components/Footer.astro";
 import type { Commission } from "../types";
 
 const rawCommissions = await getCollection("commissions");
-const COMMISSIONS: Commission[] = rawCommissions.map((entry) => ({
+const allCommissions: Commission[] = rawCommissions.map((entry) => ({
   ...entry.data,
   entryId: entry.id,
   body: entry.body,
 }));
+
+const TWO_MONTHS_MS = 60 * 24 * 60 * 60 * 1000;
+const cutoffDate = Date.now() - TWO_MONTHS_MS;
+
+const activeCommissions = allCommissions.filter(
+  (c) => c.status !== "completed",
+);
+
+const recentCompleted = allCommissions
+  .filter(
+    (c) =>
+      c.status === "completed" && new Date(c.updatedAt).getTime() >= cutoffDate,
+  )
+  .sort(
+    (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+  )
+  .slice(0, 30);
+
+const COMMISSIONS: Commission[] = [...activeCommissions, ...recentCompleted];
 ---
 
 <Layout title="Hielo's Commission Board">

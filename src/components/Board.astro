@@ -20,9 +20,19 @@ const getFilteredCommissions = (statusKey: string) => {
     );
   }
 
-  return [...filtered].sort(
-    (a, b) => new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime(),
-  );
+  return [...filtered].sort((a, b) => {
+    const dateDiff =
+      new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
+    if (dateDiff !== 0) return dateDiff;
+
+    if (typeof a.id === "number" && typeof b.id === "number") {
+      return a.id - b.id;
+    }
+    return String(a.id).localeCompare(String(b.id), undefined, {
+      numeric: true,
+      sensitivity: "base",
+    });
+  });
 };
 ---
 
