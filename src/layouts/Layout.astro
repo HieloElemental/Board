@@ -1,0 +1,23 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+}
+
+const { title = "Hielo's Commission Board" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="h-full bg-bg">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body class="h-full font-mono text-fg bg-bg antialiased">
+    <slot />
+  </body>
+</html>

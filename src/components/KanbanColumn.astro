@@ -1,0 +1,46 @@
+---
+import type { Commission, ColumnConfig } from "../types";
+import CommissionCard from "./CommissionCard.astro";
+import EmptyColumn from "./EmptyColumn.astro";
+
+interface Props {
+  col: ColumnConfig;
+  commissions: Commission[];
+}
+
+const { col, commissions } = Astro.props;
+---
+
+<div class="w-60 sm:flex-none sm:w-65.5ex flex-col gap-3">
+  <div
+    class="h-px w-full rounded-full opacity-55"
+    style={`background-color: ${col.color}`}
+  >
+  </div>
+
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <span
+        class="w-1.25 h-1.25 rounded-full shrink-0"
+        style={`background-color: ${col.color}`}></span>
+      <h2 class="font-display font-semibold text-fg text-[13px] tracking-tight">
+        {col.label}
+      </h2>
+    </div>
+    <span
+      class="font-mono text-[10px] text-fg-dim bg-surface border border-border px-1.5 py-0.75 rounded tracking-[0.12em]"
+    >
+      {String(commissions.length).padStart(2, "0")}
+    </span>
+  </div>
+
+  <div class="flex flex-col gap-2.5">
+    {
+      commissions.length === 0 ? (
+        <EmptyColumn label={col.label} />
+      ) : (
+        commissions.map((c) => <CommissionCard c={c} />)
+      )
+    }
+  </div>
+</div>

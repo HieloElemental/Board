@@ -1,0 +1,156 @@
+---
+import type { Commission } from "../types";
+import { COLUMNS } from "../utils/constants";
+import KanbanColumn from "./KanbanColumn.astro";
+
+interface Props {
+  commissions: Commission[];
+}
+
+const { commissions } = Astro.props;
+const active = commissions.filter((c) => c.status !== "completed").length;
+
+// Helper function to handle filtering and custom sorting for columns
+// - Completed: Newest first (LIFO)
+// - Active: Oldest first (FIFO queue)
+const getFilteredCommissions = (statusKey: string) => {
+  const filtered = commissions.filter((c) => c.status === statusKey);
+
+  if (statusKey === "completed") {
+    return [...filtered].sort(
+      (a, b) =>
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+    );
+  }
+
+  return [...filtered].sort(
+    (a, b) => new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime(),
+  );
+};
+---
+
+<section
+  id="commissions"
+  class="border-t border-border bg-surface py-8"
+  style="background-image: radial-gradient(circle, rgba(122,184,212,0.045) 1px, transparent 1px); background-size: 22px 22px;"
+>
+  <div
+    class="max-w-7xl mx-auto px-5 md:px-8 mb-6 flex items-start sm:items-center justify-between gap-4"
+  >
+    <div>
+      <h2 class="font-display font-bold text-fg text-lg tracking-tight">
+        Board
+      </h2>
+      <p class="font-mono text-fg-dim text-[10px] tracking-[0.16em] mt-0.5">
+        {active} ACTIVE · {commissions.length} TOTAL
+      </p>
+    </div>
+
+    <div class="hidden sm:flex items-center gap-1.5 flex-wrap justify-end">
+      {
+        COLUMNS.map((col) => (
+          <div class="flex items-center gap-1.5 px-2 py-1 rounded bg-bg/60 border border-border">
+            <span
+              class="w-1.5 h-1.5 rounded-full shrink-0"
+              style={`background-color: ${col.color}`}
+            />
+            <span class="font-mono text-fg-dim text-[10px]">{col.label}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Mobile View with Vanilla JS Tab Handler -->
+  <div class="sm:hidden px-5 mb-5" id="mobile-tab-container">
+    <div class="flex gap-1.5 overflow-x-auto pb-0.5">
+      {
+        COLUMNS.map((col) => {
+          const count = commissions.filter((c) => c.status === col.key).length;
+          return (
+            <button
+              data-tab={col.key}
+              class={`mobile-tab-btn shrink-0 flex items-center gap-1.5 font-mono text-[10px] tracking-[0.12em] px-2.5 py-1.5 rounded border transition-all duration-150 ${
+                col.key === "waiting"
+                  ? "text-accent border-accent/30 bg-accent/8 active-tab"
+                  : "text-fg-dim border-border bg-transparent hover:text-fg-sub"
+              }`}
+            >
+              <span
+                class="w-1 h-1 rounded-full shrink-0 opacity-70"
+                style={`background-color: ${col.color}`}
+              />
+              {col.label}
+              <span class="opacity-45 ml-0.5">{count}</span>
+            </button>
+          );
+        })
+      }
+    </div>
+
+    <div class="mt-4">
+      {
+        COLUMNS.map((col) => (
+          <div
+            data-column-content={col.key}
+            class={`mobile-column ${col.key === "waiting" ? "block" : "hidden"}`}
+          >
+            <div class="w-full flex justify-center">
+              <KanbanColumn
+                col={col}
+                commissions={getFilteredCommissions(col.key)}
+              />
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Desktop Horizontal View -->
+  <div class="hidden sm:block overflow-x-auto">
+    <div class="flex justify-center gap-4 px-5 md:px-8 pb-4 min-w-full w-max">
+      {
+        COLUMNS.map((col) => (
+          <KanbanColumn
+            col={col}
+            commissions={getFilteredCommissions(col.key)}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  // Lightweight Tab Switcher
+  const tabButtons =
+    document.querySelectorAll<HTMLButtonElement>(".mobile-tab-btn");
+  const tabColumns = document.querySelectorAll<HTMLDivElement>(
+    "[data-column-content]",
+  );
+
+  tabButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const selectedTab = btn.getAttribute("data-tab");
+
+      tabButtons.forEach((b) => {
+        b.classList.remove("text-accent", "border-accent/30", "bg-accent/8");
+        b.classList.add("text-fg-dim", "border-border", "bg-transparent");
+      });
+
+      btn.classList.add("text-accent", "border-accent/30", "bg-accent/8");
+      btn.classList.remove("text-fg-dim", "border-border", "bg-transparent");
+
+      tabColumns.forEach((col) => {
+        if (col.getAttribute("data-column-content") === selectedTab) {
+          col.classList.remove("hidden");
+          col.classList.add("block");
+        } else {
+          col.classList.remove("block");
+          col.classList.add("hidden");
+        }
+      });
+    });
+  });
+</script>

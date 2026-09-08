@@ -1,0 +1,124 @@
+---
+import { Image } from "astro:assets";
+import type { Commission } from "../types";
+import { blocks } from "../utils/formatters";
+
+interface Props {
+  c: Commission;
+}
+
+const { c } = Astro.props;
+const done = c.status === "completed";
+const live = !done && c.progress >= 70;
+---
+
+<article
+  class="group bg-card border border-border rounded-lg overflow-hidden transition-all duration-200 hover:border-accent/28 hover:bg-card-hover hover:-translate-y-px cursor-pointer"
+>
+  {/* Image Container with Fallback */}
+  <div
+    class="overflow-hidden bg-surface relative flex items-center justify-center"
+    class:list={[{ "aspect-4/3": c.image }]}
+  >
+    {
+      c.image && (
+        <Image
+          src={c.image}
+          alt={`Artwork preview — ${c.character}`}
+          class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
+          width={420}
+          height={315}
+        />
+      )
+    }
+
+    <div
+      class="absolute inset-x-0 bottom-0 h-10 pointer-events-none"
+      style="background: linear-gradient(to top, rgba(15,21,33,0.75), transparent)"
+    >
+    </div>
+
+    {
+      done && (
+        <div
+          class="absolute inset-0 pointer-events-none"
+          style="background: rgba(66,168,110,0.07)"
+        />
+      )
+    }
+
+    {
+      live && (
+        <span class="absolute top-2 right-2 flex items-center gap-1 px-1.5 py-0.75 rounded-sm font-mono text-[9px] text-accent tracking-wider border border-accent/20 backdrop-blur-sm bg-bg/70">
+          <span class="w-1 h-1 rounded-full bg-accent animate-pulse shrink-0" />
+          LIVE
+        </span>
+      )
+    }
+  </div>
+
+  <div class="p-3.5 flex flex-col gap-2.5">
+    <div class="flex items-start justify-between gap-2">
+      <span
+        class="font-mono text-accent text-[11px] font-medium tracking-wider shrink-0"
+        >{c.id}</span
+      >
+      <span
+        class="font-mono text-fg-dim text-[9px] tracking-[0.08em] bg-surface border border-border px-1.5 py-0.75 rounded-sm leading-none text-right"
+      >
+        {c.type}
+      </span>
+    </div>
+
+    <div>
+      <h3 class="font-display font-semibold text-fg text-[14px] leading-snug">
+        {c.character}
+      </h3>
+      {
+        c.clientAlias && (
+          <p class="font-mono text-fg-sub text-[10px] mt-0.5 tracking-wide">
+            @{c.clientAlias}
+          </p>
+        )
+      }
+      {
+        c.body && (
+          <p class="font-mono text-fg-dim text-[11px] mt-1.5 line-clamp-2 leading-relaxed">
+            {c.body}
+          </p>
+        )
+      }
+    </div>
+
+    <div class="flex flex-col gap-1.5">
+      <div class="flex items-center justify-between">
+        <span class="font-mono text-fg-dim text-[10px] tracking-[0.18em]">
+          {done ? "DELIVERED" : "PROGRESS"}
+        </span>
+        <span
+          class={`font-mono text-[11px] font-medium ${done ? "text-ok" : "text-accent"}`}
+        >
+          {c.progress}%
+        </span>
+      </div>
+      <div class="h-0.5 bg-border rounded-full overflow-hidden">
+        <div
+          class={`h-full rounded-full transition-all duration-500 ${done ? "bg-ok" : "bg-accent"}`}
+          style={`width: ${c.progress}%`}
+        >
+        </div>
+      </div>
+      <span
+        class="font-mono text-fg-dim text-[9px] opacity-40 tracking-[0.03em] select-none"
+      >
+        {blocks(c.progress)}
+      </span>
+    </div>
+
+    <p
+      class="font-mono text-fg-dim text-[10px] tracking-[0.15em] pt-2 border-t border-border-dim"
+    >
+      UPDATED // {c.updatedAt}
+    </p>
+  </div>
+</article>

@@ -1,0 +1,47 @@
+---
+import IceMark from "./IceMark.astro";
+
+const links = [
+  ["Twitter / X", "#"],
+  ["FurAffinity", "#"],
+  ["Ko-fi", "#"],
+  ["Telegram", "#"],
+] as const;
+---
+
+<footer class="border-t border-border bg-bg py-8 px-5 md:px-8">
+  <div
+    class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left"
+  >
+    <div class="flex items-center gap-2.5">
+      <IceMark size={17} />
+      <div>
+        <p class="font-display font-semibold text-fg text-sm">
+          Hielo Elemental
+        </p>
+        <p class="font-mono text-fg-dim text-[10px] tracking-wide mt-0.5">
+          © 2026 · all artwork is personal property
+        </p>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+      {
+        links.map(([label, href]) => (
+          <a
+            href={href}
+            class="font-mono text-fg-dim text-[11px] hover:text-accent transition-colors duration-150 tracking-wide"
+          >
+            {label}
+          </a>
+        ))
+      }
+    </div>
+
+    <p
+      class="font-mono text-fg-dim text-[10px] tracking-[0.16em] leading-relaxed hidden lg:block"
+    >
+      DRAWN WITH COLD HANDS<br />AND WARM INTENT
+    </p>
+  </div>
+</footer>

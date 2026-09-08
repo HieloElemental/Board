@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Epilogue:wght@400;600;700;800&family=Inter:wght@400;500;600&family=Victor+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Epilogue", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "Victor Mono", monospace;
+
+  --color-bg: #070a10;
+  --color-surface: #0b0f18;
+  --color-card: #0f1521;
+  --color-card-hover: #141c2c;
+  --color-border: #1e2c3e;
+  --color-border-dim: #131d2b;
+  --color-accent: #79b7d3;
+  --color-accent-muted: #3b6a84;
+  --color-fg: #dde5ef;
+  --color-fg-sub: #8aa4bc;
+  --color-fg-dim: #607898;
+  --color-ok: #4aab74;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  background-color: #070a10;
+  color: #dde5ef;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e2c3e;
+  border-radius: 2px;
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #1e2c3e transparent;
+}
+
+@keyframes cursor-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.cursor-blink {
+  animation: cursor-blink 1.1s step-end infinite;
+}

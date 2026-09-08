@@ -1,0 +1,32 @@
+---
+import type { Commission } from "../types";
+import Hero from "./Hero.astro";
+import Navbar from "./Navbar.astro";
+import Stats from "./Stats.astro";
+
+interface Props {
+  commissions: Commission[];
+}
+
+const { commissions } = Astro.props;
+---
+
+<header class="top-0 z-50 border-b border-border bg-bg/92 backdrop-blur-md">
+  <Navbar />
+
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute -top-40 right-0 w-160 h-160 rounded-full opacity-100"
+    style="background: radial-gradient(circle, rgba(122,184,212,0.06) 0%, transparent 65%)"
+  >
+  </div>
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute top-1/2 -left-24 w-100 h-100 rounded-full"
+    style="background: radial-gradient(circle, rgba(131,112,184,0.05) 0%, transparent 70%)"
+  >
+  </div>
+
+  <Hero commissions={commissions} />
+  <Stats commissions={commissions} />
+</header>

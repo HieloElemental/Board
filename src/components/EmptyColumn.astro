@@ -1,0 +1,20 @@
+---
+import IceMark from "./IceMark.astro";
+
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<div
+  class="border border-dashed border-border rounded-lg flex flex-col items-center justify-center gap-2.5 py-12"
+>
+  <IceMark size={18} />
+  <p
+    class="font-mono text-fg-dim text-[10px] tracking-[0.15em] text-center leading-relaxed opacity-60"
+  >
+    NOTHING IN<br />{label.toUpperCase()} YET
+  </p>
+</div>

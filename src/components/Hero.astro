@@ -1,0 +1,81 @@
+---
+import type { Commission } from "../types";
+import { blocks } from "../utils/formatters";
+import { Image } from "astro:assets";
+
+interface Props {
+  commissions: Commission[];
+}
+
+const { commissions } = Astro.props;
+
+const spotlight = commissions
+  .filter((c) => c.status !== "completed" && c.status !== "waiting")
+  .sort((a, b) => b.progress - a.progress)[0];
+---
+
+<section class="relative overflow-hidden">
+  <div class="relative max-w-7xl mx-auto px-5 md:px-8 pt-16 pb-14">
+    <p
+      class="font-mono text-[11px] tracking-[0.22em] mb-6 flex items-center gap-1.5"
+      style="color: rgba(122,184,212,0.5)"
+    >
+      SYSTEM STATUS // DRAWING IN PROGRESS
+      <span class="cursor-blink" style="color: rgba(122,184,212,0.3)">▌</span>
+    </p>
+
+    <h1
+      class="font-display font-extrabold text-fg text-[40px] md:text-[58px] leading-[1.04] tracking-tight mb-5"
+    >
+      Hielo's<br />Commission Queue
+    </h1>
+
+    <p
+      class="font-body text-fg-sub text-[16px] md:text-lg max-w-120 leading-relaxed mb-8"
+    >
+      A live, public view of every commission in progress — where each piece
+      stands, from first queue to final delivery.
+    </p>
+
+    <div class="flex flex-wrap items-center gap-3">
+      <div
+        class="inline-flex items-center gap-1.5 bg-ok/10 border border-ok/25 text-ok font-mono text-[10px] tracking-[0.18em] px-2.5 py-1.5 rounded"
+      >
+        <span class="w-1.5 h-1.5 rounded-full bg-ok animate-pulse"></span>
+        ACCEPTING COMMISSIONS
+      </div>
+
+      {
+        spotlight && (
+          <div class="flex items-center gap-2.5 bg-surface border border-border rounded-lg px-3 py-2 hover:border-accent/25 transition-colors duration-150 cursor-pointer">
+            {spotlight.image && (
+              <div class="w-9 h-9 rounded overflow-hidden bg-border shrink-0">
+                <Image
+                  src={spotlight.image}
+                  alt={`Spotlight artwork for ${spotlight.character}`}
+                  class="w-full h-full object-cover"
+                  width={36}
+                  height={36}
+                />
+              </div>
+            )}
+            <div class="min-w-0">
+              <p
+                class="font-mono text-[9px] tracking-[0.18em] mb-0.5"
+                style="color: rgba(122,184,212,0.5)"
+              >
+                ON THE EASEL
+              </p>
+              <p class="font-display font-semibold text-fg text-[12px] leading-tight truncate">
+                {spotlight.character} — {spotlight.type}
+              </p>
+              <p class="font-mono text-fg-dim text-[9px] mt-0.5 tracking-[0.03em] opacity-70">
+                {blocks(spotlight.progress)} {spotlight.progress}%
+              </p>
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>

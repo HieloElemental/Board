@@ -1,0 +1,42 @@
+---
+import type { Commission } from "../types";
+
+interface Props {
+  commissions: Commission[];
+}
+
+const { commissions } = Astro.props;
+
+const active = commissions.filter((c) => c.status !== "completed").length;
+const waiting = commissions.filter((c) => c.status === "waiting").length;
+const completed = commissions.filter((c) => c.status === "completed").length;
+
+const items = [
+  { label: "Active", value: String(active), sub: "in pipeline" },
+  { label: "In Queue", value: String(waiting), sub: "not yet started" },
+  {
+    label: "Completed",
+    value: String(completed),
+    sub: `of ${commissions.length} total`,
+  },
+  { label: "Est. Wait", value: `~${waiting * 2}w`, sub: "for new openings" },
+];
+---
+
+<section class="max-w-7xl mx-auto px-5 md:px-8 pb-14">
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+    {
+      items.map(({ label, value, sub }) => (
+        <div class="bg-surface border border-border rounded-lg px-4 py-4 md:px-5 md:py-5">
+          <p class="font-mono text-fg-dim text-[10px] tracking-[0.18em] uppercase mb-3">
+            {label}
+          </p>
+          <p class="font-display font-bold text-fg text-[34px] leading-none mb-2">
+            {value}
+          </p>
+          <p class="font-mono text-fg-dim text-[10px]">{sub}</p>
+        </div>
+      ))
+    }
+  </div>
+</section>
