@@ -40,4 +40,65 @@ const { title = "Hielo's Commission Board" } = Astro.props;
   <body class="h-full font-mono text-fg bg-bg antialiased">
     <slot />
   </body>
+  <script>
+    import { translations } from "../utils/i18n";
+    type TranslationKey = keyof typeof translations.en;
+    type Language = "en" | "es";
+
+    declare global {
+      interface Window {
+        setLanguage: (lang: Language) => void;
+      }
+    }
+
+    function setLanguage(lang: Language) {
+      localStorage.setItem("preferred_lang", lang);
+      document.documentElement.lang = lang;
+
+      const elements = document.querySelectorAll<HTMLElement>("[data-i18n]");
+
+      elements.forEach((el) => {
+        const rawKey = el.getAttribute("data-i18n");
+
+        if (rawKey && rawKey in translations[lang]) {
+          const key = rawKey as TranslationKey;
+          let translationText = translations[lang][key] as string;
+
+          const total = el.getAttribute("data-total");
+          if (total !== null) {
+            translationText = translationText.replace("{total}", total);
+          }
+
+          el.textContent = translationText;
+        }
+      });
+    }
+
+    window.setLanguage = setLanguage;
+
+    const detectBrowserLanguage = (): Language => {
+      const saved = localStorage.getItem("preferred_lang") as Language | null;
+      if (saved && (saved === "en" || saved === "es")) return saved;
+
+      const browserLangs = navigator.languages || [navigator.language];
+      for (const lang of browserLangs) {
+        if (lang.toLowerCase().startsWith("es")) {
+          return "es";
+        }
+      }
+
+      return "en";
+    };
+
+    const initLanguage = () => {
+      const targetLang = detectBrowserLanguage();
+      setLanguage(targetLang);
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initLanguage);
+    } else {
+      initLanguage();
+    }
+  </script>
 </html>

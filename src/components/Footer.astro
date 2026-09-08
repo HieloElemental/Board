@@ -2,10 +2,13 @@
 import IceMark from "./IceMark.astro";
 
 const links = [
-  ["Twitter / X", "#"],
-  ["FurAffinity", "#"],
-  ["Ko-fi", "#"],
-  ["Telegram", "#"],
+  ["Twitter / X", "https://x.com/HieloElemental"],
+  ["Bluesky", "https://bsky.app/profile/hieloelemental.bsky.social"],
+  ["FurAffinity", "https://www.furaffinity.net/user/hieloelemental/"],
+  ["Instagram", "https://www.instagram.com/hieloelemental/"],
+  ["Facebook", "https://www.facebook.com/hielo.elemental/"],
+  ["Telegram", "https://t.me/HieloElemental"],
+  ["DeviantArt", "https://www.deviantart.com/hieloelemental"],
 ] as const;
 ---
 
@@ -20,7 +23,9 @@ const links = [
           Hielo Elemental
         </p>
         <p class="font-mono text-fg-dim text-[10px] tracking-wide mt-0.5">
-          © 2026 · all artwork is personal property
+          © 2026 · <span data-i18n="copyright"
+            >all artwork is personal property</span
+          >
         </p>
       </div>
     </div>
@@ -41,7 +46,8 @@ const links = [
     <p
       class="font-mono text-fg-dim text-[10px] tracking-[0.16em] leading-relaxed hidden lg:block"
     >
-      DRAWN WITH COLD HANDS<br />AND WARM INTENT
+      <span data-i18n="footerTagline1">DRAWN WITH COLD HANDS</span><br />
+      <span data-i18n="footerTagline2">AND WARM INTENT</span>
     </p>
   </div>
 </footer>

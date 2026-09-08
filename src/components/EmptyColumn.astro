@@ -3,9 +3,10 @@ import IceMark from "./IceMark.astro";
 
 interface Props {
   label: string;
+  statusKey?: string;
 }
 
-const { label } = Astro.props;
+const { label, statusKey } = Astro.props;
 ---
 
 <div
@@ -15,6 +16,8 @@ const { label } = Astro.props;
   <p
     class="font-mono text-fg-dim text-[10px] tracking-[0.15em] text-center leading-relaxed opacity-60"
   >
-    NOTHING IN<br />{label.toUpperCase()} YET
+    <span data-i18n="emptyPrefix">NOTHING IN</span><br />
+    <span data-i18n={statusKey} class="uppercase">{label}</span><span> </span>
+    <span data-i18n="emptySuffix">YET</span>
   </p>
 </div>

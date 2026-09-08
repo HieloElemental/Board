@@ -10,9 +10,6 @@ interface Props {
 const { commissions } = Astro.props;
 const active = commissions.filter((c) => c.status !== "completed").length;
 
-// Helper function to handle filtering and custom sorting for columns
-// - Completed: Newest first (LIFO)
-// - Active: Oldest first (FIFO queue)
 const getFilteredCommissions = (statusKey: string) => {
   const filtered = commissions.filter((c) => c.status === statusKey);
 
@@ -29,23 +26,25 @@ const getFilteredCommissions = (statusKey: string) => {
 };
 ---
 
-<section
-  id="commissions"
-  class="border-t border-border bg-surface py-8"
-  style="background-image: radial-gradient(circle, rgba(122,184,212,0.045) 1px, transparent 1px); background-size: 22px 22px;"
->
+<section id="commissions" class="border-t border-border bg-surface py-8">
   <div
     class="max-w-7xl mx-auto px-5 md:px-8 mb-6 flex items-start sm:items-center justify-between gap-4"
   >
     <div>
-      <h2 class="font-display font-bold text-fg text-lg tracking-tight">
+      <h2
+        class="font-display font-bold text-fg text-lg tracking-tight"
+        data-i18n="board"
+      >
         Board
       </h2>
       <p class="font-mono text-fg-dim text-[10px] tracking-[0.16em] mt-0.5">
-        {active} ACTIVE · {commissions.length} TOTAL
+        {active}
+        <span data-i18n="active">ACTIVE</span> · {commissions.length}
+        <span data-i18n="total">TOTAL</span>
       </p>
     </div>
 
+    <!-- Column Badges -->
     <div class="hidden sm:flex items-center gap-1.5 flex-wrap justify-end">
       {
         COLUMNS.map((col) => (
@@ -54,14 +53,16 @@ const getFilteredCommissions = (statusKey: string) => {
               class="w-1.5 h-1.5 rounded-full shrink-0"
               style={`background-color: ${col.color}`}
             />
-            <span class="font-mono text-fg-dim text-[10px]">{col.label}</span>
+            <span class="font-mono text-fg-dim text-[10px]" data-i18n={col.key}>
+              {col.label}
+            </span>
           </div>
         ))
       }
     </div>
   </div>
 
-  <!-- Mobile View with Vanilla JS Tab Handler -->
+  <!-- Mobile View Tabs -->
   <div class="sm:hidden px-5 mb-5" id="mobile-tab-container">
     <div class="flex gap-1.5 overflow-x-auto pb-0.5">
       {
@@ -80,7 +81,7 @@ const getFilteredCommissions = (statusKey: string) => {
                 class="w-1 h-1 rounded-full shrink-0 opacity-70"
                 style={`background-color: ${col.color}`}
               />
-              {col.label}
+              <span data-i18n={col.key}>{col.label}</span>
               <span class="opacity-45 ml-0.5">{count}</span>
             </button>
           );
@@ -121,36 +122,3 @@ const getFilteredCommissions = (statusKey: string) => {
     </div>
   </div>
 </section>
-
-<script>
-  // Lightweight Tab Switcher
-  const tabButtons =
-    document.querySelectorAll<HTMLButtonElement>(".mobile-tab-btn");
-  const tabColumns = document.querySelectorAll<HTMLDivElement>(
-    "[data-column-content]",
-  );
-
-  tabButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const selectedTab = btn.getAttribute("data-tab");
-
-      tabButtons.forEach((b) => {
-        b.classList.remove("text-accent", "border-accent/30", "bg-accent/8");
-        b.classList.add("text-fg-dim", "border-border", "bg-transparent");
-      });
-
-      btn.classList.add("text-accent", "border-accent/30", "bg-accent/8");
-      btn.classList.remove("text-fg-dim", "border-border", "bg-transparent");
-
-      tabColumns.forEach((col) => {
-        if (col.getAttribute("data-column-content") === selectedTab) {
-          col.classList.remove("hidden");
-          col.classList.add("block");
-        } else {
-          col.classList.remove("block");
-          col.classList.add("hidden");
-        }
-      });
-    });
-  });
-</script>

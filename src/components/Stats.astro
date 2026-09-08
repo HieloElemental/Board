@@ -12,29 +12,59 @@ const waiting = commissions.filter((c) => c.status === "waiting").length;
 const completed = commissions.filter((c) => c.status === "completed").length;
 
 const items = [
-  { label: "Active", value: String(active), sub: "in pipeline" },
-  { label: "In Queue", value: String(waiting), sub: "not yet started" },
   {
+    labelKey: "statActive",
+    label: "Active",
+    value: String(active),
+    subKey: "statActiveSub",
+    sub: "in pipeline",
+  },
+  {
+    labelKey: "statInQueue",
+    label: "In Queue",
+    value: String(waiting),
+    subKey: "statInQueueSub",
+    sub: "not yet started",
+  },
+  {
+    labelKey: "statCompleted",
     label: "Completed",
     value: String(completed),
+    subKey: "statCompletedSub",
     sub: `of ${commissions.length} total`,
+    totalCount: commissions.length,
   },
-  { label: "Est. Wait", value: `~${waiting * 2}w`, sub: "for new openings" },
+  {
+    labelKey: "statEstWait",
+    label: "Est. Wait",
+    value: `~${waiting * 2}w`,
+    subKey: "statEstWaitSub",
+    sub: "for new openings",
+  },
 ];
 ---
 
 <section class="max-w-7xl mx-auto px-5 md:px-8 pb-14">
   <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
     {
-      items.map(({ label, value, sub }) => (
+      items.map(({ labelKey, label, value, subKey, sub, totalCount }) => (
         <div class="bg-surface border border-border rounded-lg px-4 py-4 md:px-5 md:py-5">
-          <p class="font-mono text-fg-dim text-[10px] tracking-[0.18em] uppercase mb-3">
+          <p
+            class="font-mono text-fg-dim text-[10px] tracking-[0.18em] uppercase mb-3"
+            data-i18n={labelKey}
+          >
             {label}
           </p>
           <p class="font-display font-bold text-fg text-[34px] leading-none mb-2">
             {value}
           </p>
-          <p class="font-mono text-fg-dim text-[10px]">{sub}</p>
+          <p
+            class="font-mono text-fg-dim text-[10px]"
+            data-i18n={subKey}
+            data-total={totalCount}
+          >
+            {sub}
+          </p>
         </div>
       ))
     }

@@ -2,6 +2,7 @@
 import type { Commission } from "../types";
 import { blocks } from "../utils/formatters";
 import { Image } from "astro:assets";
+import { COMMISSIONS_OPEN } from "../utils/constants"; // 1. Import global switch
 
 interface Props {
   commissions: Commission[];
@@ -20,29 +21,53 @@ const spotlight = commissions
       class="font-mono text-[11px] tracking-[0.22em] mb-6 flex items-center gap-1.5"
       style="color: rgba(122,184,212,0.5)"
     >
-      SYSTEM STATUS // DRAWING IN PROGRESS
+      <span
+        data-i18n={COMMISSIONS_OPEN ? "systemStatusOpen" : "systemStatusClosed"}
+      >
+        {
+          COMMISSIONS_OPEN
+            ? "SYSTEM STATUS // DRAWING IN PROGRESS"
+            : "SYSTEM STATUS // QUEUE CLOSED"
+        }
+      </span>
       <span class="cursor-blink" style="color: rgba(122,184,212,0.3)">▌</span>
     </p>
 
     <h1
       class="font-display font-extrabold text-fg text-[40px] md:text-[58px] leading-[1.04] tracking-tight mb-5"
     >
-      Hielo's<br />Commission Queue
+      <span data-i18n="heroTitlePrefix">Hielo's</span><br />
+      <span data-i18n="heroTitleSuffix">Commission Queue</span>
     </h1>
 
     <p
       class="font-body text-fg-sub text-[16px] md:text-lg max-w-120 leading-relaxed mb-8"
+      data-i18n="heroDescription"
     >
       A live, public view of every commission in progress — where each piece
       stands, from first queue to final delivery.
     </p>
 
     <div class="flex flex-wrap items-center gap-3">
+      <!-- Badge changes color (ok vs error/dim) and text automatically -->
       <div
-        class="inline-flex items-center gap-1.5 bg-ok/10 border border-ok/25 text-ok font-mono text-[10px] tracking-[0.18em] px-2.5 py-1.5 rounded"
+        class={`inline-flex items-center gap-1.5 border font-mono text-[10px] tracking-[0.18em] px-2.5 py-1.5 rounded ${
+          COMMISSIONS_OPEN
+            ? "bg-ok/10 border-ok/25 text-ok"
+            : "bg-border/30 border-border text-fg-dim"
+        }`}
       >
-        <span class="w-1.5 h-1.5 rounded-full bg-ok animate-pulse"></span>
-        ACCEPTING COMMISSIONS
+        <span
+          class={`w-1.5 h-1.5 rounded-full ${
+            COMMISSIONS_OPEN ? "bg-ok animate-pulse" : "bg-fg-dim/40"
+          }`}></span>
+        <span
+          data-i18n={COMMISSIONS_OPEN
+            ? "acceptingCommissions"
+            : "commissionsClosed"}
+        >
+          {COMMISSIONS_OPEN ? "ACCEPTING COMMISSIONS" : "COMMISSIONS CLOSED"}
+        </span>
       </div>
 
       {
@@ -63,6 +88,7 @@ const spotlight = commissions
               <p
                 class="font-mono text-[9px] tracking-[0.18em] mb-0.5"
                 style="color: rgba(122,184,212,0.5)"
+                data-i18n="onTheEasel"
               >
                 ON THE EASEL
               </p>

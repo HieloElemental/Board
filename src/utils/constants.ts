@@ -1,5 +1,7 @@
 import type { ColumnConfig } from "../types";
 
+export const COMMISSIONS_OPEN = true;
+
 export const COLUMNS: ColumnConfig[] = [
   { key: "waiting", label: "QUEUE", color: "#64748b" },
   { key: "sketch", label: "SKETCH", color: "#7ab8d4" },

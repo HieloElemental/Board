@@ -1,7 +1,11 @@
 ---
 import IceMark from "./IceMark.astro";
 
-const navItems = ["Commissions", "Gallery", "About"] as const;
+const navItems = [
+  { label: "Commissions", key: "navCommissions", href: "#commissions" },
+  { label: "Gallery", key: "navGallery", href: "#" },
+  { label: "About", key: "navAbout", href: "#" },
+] as const;
 ---
 
 <div class="sticky top-0 z-50 border-b border-border bg-bg/92 backdrop-blur-md">
@@ -21,16 +25,18 @@ const navItems = ["Commissions", "Gallery", "About"] as const;
       {
         navItems.map((item) => (
           <a
-            href={item === "Commissions" ? "#commissions" : "#"}
+            href={item.href}
             class="font-body text-[13px] text-fg-sub hover:text-fg transition-colors duration-150"
+            data-i18n={item.key}
           >
-            {item}
+            {item.label}
           </a>
         ))
       }
       <a
         href="#"
         class="font-mono text-[11px] text-accent border border-accent/30 hover:bg-accent/10 hover:border-accent/50 transition-all duration-150 px-3 py-1.5 rounded tracking-wider"
+        data-i18n="navCommissionInfo"
       >
         Commission Info
       </a>

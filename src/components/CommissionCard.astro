@@ -51,7 +51,7 @@ const live = !done && c.progress >= 70;
       live && (
         <span class="absolute top-2 right-2 flex items-center gap-1 px-1.5 py-0.75 rounded-sm font-mono text-[9px] text-accent tracking-wider border border-accent/20 backdrop-blur-sm bg-bg/70">
           <span class="w-1 h-1 rounded-full bg-accent animate-pulse shrink-0" />
-          LIVE
+          <span data-i18n="live">LIVE</span>
         </span>
       )
     }
@@ -92,7 +92,10 @@ const live = !done && c.progress >= 70;
 
     <div class="flex flex-col gap-1.5">
       <div class="flex items-center justify-between">
-        <span class="font-mono text-fg-dim text-[10px] tracking-[0.18em]">
+        <span
+          class="font-mono text-fg-dim text-[10px] tracking-[0.18em]"
+          data-i18n={done ? "delivered" : "progress"}
+        >
           {done ? "DELIVERED" : "PROGRESS"}
         </span>
         <span
@@ -118,7 +121,7 @@ const live = !done && c.progress >= 70;
     <p
       class="font-mono text-fg-dim text-[10px] tracking-[0.15em] pt-2 border-t border-border-dim"
     >
-      UPDATED // {c.updatedAt}
+      <span data-i18n="updated">UPDATED</span> // {c.updatedAt}
     </p>
   </div>
 </article>
