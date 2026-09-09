@@ -37,7 +37,7 @@ const items = [
   {
     labelKey: "statEstWait",
     label: "Est. Wait",
-    value: `~${waiting * 2}w`,
+    value: `~${(waiting / 1.6).toFixed(1)}w`,
     subKey: "statEstWaitSub",
     sub: "for new openings",
   },
