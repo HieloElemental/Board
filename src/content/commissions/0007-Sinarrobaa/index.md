@@ -5,5 +5,7 @@ clientAlias: "Sinarrobaa"
 type: "Sticker"
 progress: 0
 updatedAt: "Sep 08 2026"
-status: "waiting"
+status: "sketch"
 ---
+
+Sticker for the emoji 😑
