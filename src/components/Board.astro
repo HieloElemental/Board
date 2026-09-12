@@ -132,3 +132,39 @@ const getFilteredCommissions = (statusKey: string) => {
     </div>
   </div>
 </section>
+
+<script>
+  function initMobileTabs() {
+    const tabButtons = document.querySelectorAll<HTMLButtonElement>('.mobile-tab-btn');
+    const columnContents = document.querySelectorAll<HTMLElement>('[data-column-content]');
+
+    tabButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetTab = btn.getAttribute('data-tab');
+        if (!targetTab) return;
+
+        tabButtons.forEach((tab) => {
+          tab.classList.remove('text-accent', 'border-accent/30', 'bg-accent/8', 'active-tab');
+          tab.classList.add('text-fg-dim', 'border-border', 'bg-transparent');
+        });
+
+        btn.classList.add('text-accent', 'border-accent/30', 'bg-accent/8', 'active-tab');
+        btn.classList.remove('text-fg-dim', 'border-border', 'bg-transparent');
+
+        columnContents.forEach((col) => {
+          const colKey = col.getAttribute('data-column-content');
+          if (colKey === targetTab) {
+            col.classList.remove('hidden');
+            col.classList.add('block');
+          } else {
+            col.classList.remove('block');
+            col.classList.add('hidden');
+          }
+        });
+      });
+    });
+  }
+
+  initMobileTabs();
+  document.addEventListener('astro:page-load', initMobileTabs);
+</script>
