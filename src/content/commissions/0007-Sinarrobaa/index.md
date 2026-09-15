@@ -3,9 +3,10 @@ id: "#0007"
 character: "Daxt"
 clientAlias: "Sinarrobaa"
 type: "Sticker"
-progress: 90
-updatedAt: "Sep 08 2026"
-status: "sketch"
+progress: 100
+updatedAt: "Sep 14 2026"
+status: "completed"
+image: "./cover.png"
 ---
 
 Sticker for the emoji 😑
