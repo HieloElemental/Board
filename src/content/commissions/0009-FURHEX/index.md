@@ -3,7 +3,10 @@ id: "#0009"
 character: "Furhex"
 clientAlias: "FURHEX"
 type: "Sticker"
-progress: 0
-updatedAt: "Sep 08 2026"
-status: "waiting"
+progress: 100
+updatedAt: "Sep 29 2026"
+status: "completed"
+image: "./cover.png"
 ---
+
+Sticker for the emoji 💸
