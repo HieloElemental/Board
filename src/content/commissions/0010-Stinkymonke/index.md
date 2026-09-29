@@ -1,9 +1,11 @@
 ---
 id: "#0010"
-character: "Jakov"
+character: "Gizmo"
 clientAlias: "Stinkymonke"
 type: "Sticker"
-progress: 0
-updatedAt: "Sep 08 2026"
-status: "waiting"
+progress: 10
+updatedAt: "Sep 29 2026"
+status: "sketch"
 ---
+
+Sticker for the emoji 🦷
